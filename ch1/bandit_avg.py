@@ -6,10 +6,7 @@ import matplotlib.pyplot as plt
 def main():
     runs = 300
     steps = 1000
-    eps = 0.1
-    all_rates = np.zeros((runs, steps))
     np.random.seed(10)
-    mean_rates = []
     eps_list = [0.1, 0.3, 0.01]
     results = {}
     for eps in eps_list:
@@ -32,7 +29,7 @@ def main():
         results[str(eps)] = avg_rates
 
     for key, values in results.items():
-        plt.plot(values, label=key)
+        plt.plot(values, label="eps: " + key)
     plt.ylabel('Rate')
     plt.xlabel('Steps')
     plt.legend()
