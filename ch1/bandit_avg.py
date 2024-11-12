@@ -10,9 +10,12 @@ def main():
     all_rates = np.zeros((runs, steps))
     np.random.seed(10)
     mean_rates = []
-    for _ in range(3):
+    eps_list = [0.1, 0.3, 0.01]
+    results = {}
+    for eps in eps_list:
+        all_rates = np.zeros((runs, steps))
         for r in range(runs):  ## run 300 times
-            bandit = Bandit()
+            bandit = Bandit()  ## 300次试验，每次都初始化十台老虎机
             agent = Agent(eps)
             rates = []
             total_reward = 0
@@ -25,12 +28,11 @@ def main():
                 rates.append(total_reward / (s + 1))
 
             all_rates[r] = rates
-        eps += 0.1  ## the bigger eps means more random action
+        avg_rates = all_rates.mean(axis=0)
+        results[str(eps)] = avg_rates
 
-        mean_rates.append(all_rates.mean(axis=0))
-
-    for i, rates in enumerate(mean_rates):
-        plt.plot(rates, label=f'eps={0.1 + i * 0.1:.1f}')
+    for key, values in results.items():
+        plt.plot(values, label=key)
     plt.ylabel('Rate')
     plt.xlabel('Steps')
     plt.legend()
